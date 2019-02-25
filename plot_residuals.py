@@ -1,3 +1,36 @@
+#!/usr/bin/python
+
+"""
+=============================================
+
+Analysis of small-angle X-ray scattering data.
+
+The script provides a way to investigate fit residuals between
+an experimental curve and theoretically calculated one.
+
+The scripts does the following:
+(i) Plot experimental and theoretically scattering curves.
+(ii) Plot normalised fit residuals.
+(iii) Plot the distribution of normalised fit residuals.
+(iv) Plot Normal-Probability plot for normalised fit
+residuals. The Normal-Probability plot serves as a visual
+test for distribution normality.
+
+Before use:
+- Install numpy, scipy, matplotlib, pandas and seaborn.
+
+To use the script provide:
+- A CRYSOL/EOM output file (.fit) containing 4 columns (q, I(q), sigma and fit).
+
+The the units of scattering angle q must be in angstroms.
+
+
+Marius Kausas					   2019 02 25
+
+=============================================
+"""
+
+import argparse
 import numpy as np
 import scipy.stats as stats
 import matplotlib.pyplot as plt
@@ -6,7 +39,23 @@ import seaborn as sns
 plt.style.use("bmh")
 
 
-def chi(exp, theor, error):
+def load_fit(path_to_file):
+
+	"""
+	Load a CRYSOL/EOM (.fit) file containing 4 columns (q, I(q), sigma and fit).
+
+	:param path_to_file: Path to the .fit file (str).
+	:return: .fit file loaded as a pandas DataFrame.
+	"""
+
+	fit = pd.read_csv(path_to_file,
+							delim_whitespace=True,
+							skiprows=1,
+							names=["q", "Iqexp", "sigmaexp", "fit"])
+	return fit
+
+
+def chi2red(exp, theor, error):
 
 	"""
 	Calculate reduced chi square value between two scattering curves.
@@ -72,7 +121,7 @@ def plot_residuals(q, exp, fit, sigma, maxq, dataname, fitname, output_name):
 
 	# Calculate a reduced chi square value
 
-	chi_value = str(np.around(chi(exp, fit, sigma), decimals=2))
+	chi_value = str(np.around(chi2red(exp, fit, sigma), decimals=2))
 
 	# Plot a fit between experimental and theoretical scattering data
 
@@ -132,3 +181,39 @@ def plot_residuals(q, exp, fit, sigma, maxq, dataname, fitname, output_name):
 	plt.suptitle(output_name)
 	plt.savefig(output_name + ".png", dpi=600)
 	plt.show()
+
+
+if __name__ == "__main__":
+
+	# Argument parser
+
+	argparser = argparse.ArgumentParser()
+	argparser.add_argument("-f", type=str, help="Path to topology file", required=True)
+	argparser.add_argument("-exp_name", type=str, help="Experimental data name", required=True)
+	argparser.add_argument("-fit_name", type=str, help="Fit data name", required=True)
+	argparser.add_argument("-maxq", type=float, default=0.5, help="Maximum value of q for plotting, default=0.5 (A)", required=False)
+	argparser.add_argument("-output_name", type=str, help="Output name", required=True)
+
+	# Parse arguments
+
+	args = argparser.parse_args()
+	path_to_file = args.f
+	exp_name = args.exp_name
+	fit_name = args.fit_name
+	maxq = args.maxq
+	output_name = args.output_name
+
+	# Load the .fit file
+
+	fit = load_fit(path_to_file)
+
+	# Plot the residuals
+
+	plot_residuals(q=fit['q'],
+				exp=fit['Iqexp'],
+				fit=fit['fit'],
+				sigma=fit['sigmaexp'],
+				maxq=maxq,
+				dataname=exp_name,
+				fitname=fit_name,
+				output_name=output_name)
