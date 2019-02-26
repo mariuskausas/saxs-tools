@@ -117,7 +117,7 @@ def guinier_properties(slope, slope_error, intercept, intercept_error, last_poin
 def guinier_plot(x, y, first_x_removed, first_y_removed,
 				 last_x_removed, last_y_removed,
 				 slope, intercept, I0, I0_error,
-				 Rg, Rg_error, qRg, r2):
+				 Rg, Rg_error, qRg, r2, output_name):
 
 	"""
 	Plot Guinier plot.
@@ -125,6 +125,23 @@ def guinier_plot(x, y, first_x_removed, first_y_removed,
 	Plot contains points used and excluded points from Guinier analysis;
 	I0 and Rg wih their respective errors; qRg limit;
 	linear fit and associated quality-of-fit metric.
+
+	:param x: q region for Guinier analysis.
+	:param y: I(q) region for Guinier analysis.
+	:param first_x_removed: First x removed points.
+	:param first_y_removed: First y removed points.
+	:param last_x_removed: Last x removed points.
+	:param last_y_removed: Last y removed points.
+	:param slope: Slope for Guinier linear fit.
+	:param intercept: Intercept for Guinier linear fit.
+	:param I0: I0 value.
+	:param I0_error: I0 error.
+	:param Rg: Rg value.
+	:param Rg_error: Rg error.
+	:param qRg: q*Rg value of a Guinier analysis.
+	:param r2: Qualiti-of-fit for linear fit.
+	:param output_name: The name of the plot file.
+	:return:
 	"""
 
 	# Plot Guinier
@@ -172,11 +189,11 @@ def guinier_plot(x, y, first_x_removed, first_y_removed,
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
 
-	plt.savefig("guinier_analysis.png", dpi=300)
-	plt.show()
+	plt.savefig(output_name + ".png", dpi=300)
+	plt.close()
 
 
-def guinier_analysis(dat_file, first_point, last_point):
+def guinier_analysis(dat_file, first_point, last_point, output_name):
 
 	"""
 	Perfrom Guinier analysis on a given data set.
@@ -224,7 +241,7 @@ def guinier_analysis(dat_file, first_point, last_point):
 				 slope, intercept,
 				 I0, I0_error,
 				 Rg, Rg_error,
-				 qRg, r2)
+				 qRg, r2, output_name)
 
 
 if __name__ == "__main__":
@@ -235,6 +252,7 @@ if __name__ == "__main__":
 	argparser.add_argument("-f", type=str, help="Path to the experimental file", required=True)
 	argparser.add_argument("-first_point", type=int, help="First point for Guinier analysis", required=True)
 	argparser.add_argument("-last_point", type=int, help="Last point for Guinier analysis", required=True)
+	argparser.add_argument("-output_name", type=str, help="Output name for a file", required=True)
 
 	# Parse arguments
 
@@ -242,7 +260,8 @@ if __name__ == "__main__":
 	path_to_file = args.f
 	first_point = args.first_point
 	last_point = args.last_point
+	output_name = args.output_name
 
 	# Do the Guinier analysis
 
-	guinier_analysis(path_to_file, first_point, last_point)
+	guinier_analysis(path_to_file, first_point, last_point, output_name)
