@@ -1,3 +1,37 @@
+#!/usr/bin/python
+d = """
+=============================================
+
+Analysis of small-angle X-ray scattering data.
+
+The script provides a way to perform Guinier analysis
+on the provided scattering scattering curve.
+
+The scripts does the following:
+(i) Upon loading a scattering curve file (.dat), one
+defines the first and last point of Guinier region for analysis.
+(ii) Then, a linear fit is done over the Guinier region and
+associated values of R(g) and I(0) with their respective errors are
+extracted. Additionally, values of q*R(g), q region, number of q points
+and a linear quality of fit parameter are reported.
+
+Before use:
+- Install numpy, scipy, matplotlib.
+
+To use the script provide:
+- Experimental scattering curve file (.dat) together with 3 columns
+of q, I(q) and sigma values.
+
+The the units of scattering angle q must be in angstroms.
+
+
+Marius Kausas					   2019 02 26
+
+=============================================
+"""
+
+
+import argparse
 import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
@@ -113,23 +147,27 @@ def guinier_plot(x, y, first_x_removed, first_y_removed,
 	ax.set_ylabel("$ln(I(0))$", fontsize=25)
 	ax.tick_params(labelsize=20)
 
-	ax.text(0.75, 0.95, s="$I(0)$ = " + str(np.round(I0, 5)) + "$\pm$" + str(np.round(I0_error, 5)),
+	ax.text(0.75, 0.95, s="$I(0)$ = {} $\pm$ {}".format(np.round(I0, 5), np.round(I0_error, 5)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
-	ax.text(0.75, 0.85, s="$R_{g}$ = " + str(np.round(Rg, 2)) + "$\pm$" + str(np.round(Rg_error, 2)),
+	ax.text(0.75, 0.85, s="$R_g$ = {} $\pm$ {}".format((np.round(Rg, 2)), np.round(Rg_error, 2)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
-	ax.text(0.75, 0.75, s="$q*R_{g}$ limit = " + str(np.round(qRg, 2)),
+	ax.text(0.75, 0.75, s="$q*R_g$ limit = {}".format(np.round(qRg, 2)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
-	ax.text(0.75, 0.65, s="Number of points used = " + str(x.shape[0]),
+	ax.text(0.75, 0.65, s="$q$ region = {}-{}".format(np.round(x[0], 4), np.round(x[-1], 4)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
-	ax.text(0.75, 0.55, s="Quality-of-fit $R^{2}$ = " + str(np.round(r2, 5)),
+	ax.text(0.75, 0.55, s="Number of points used = {}".format(x.shape[0]),
+			horizontalalignment='center',
+			verticalalignment='center',
+			transform=ax.transAxes, fontsize=20)
+	ax.text(0.75, 0.45, s="Quality-of-fit $R^2$ = {}".format(np.round(r2, 5)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
@@ -181,10 +219,30 @@ def guinier_analysis(dat_file, first_point, last_point):
 	# Plot Guinier
 
 	guinier_plot(x, y,
-			first_x_removed, first_y_removed,
-			last_x_removed, last_y_removed,
-			slope, intercept,
-			I0, I0_error,
-			Rg, Rg_error,
-			qRg, r2)
+				 first_x_removed, first_y_removed,
+				 last_x_removed, last_y_removed,
+				 slope, intercept,
+				 I0, I0_error,
+				 Rg, Rg_error,
+				 qRg, r2)
 
+
+if __name__ == "__main__":
+
+	# Argument parser
+
+	argparser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=d)
+	argparser.add_argument("-f", type=str, help="Path to the experimental file", required=True)
+	argparser.add_argument("-first_point", type=int, help="First point for Guinier analysis", required=True)
+	argparser.add_argument("-last_point", type=int, help="Last point for Guinier analysis", required=True)
+
+	# Parse arguments
+
+	args = argparser.parse_args()
+	path_to_file = args.f
+	first_point = args.first_point
+	last_point = args.last_point
+
+	# Do the Guinier analysis
+
+	guinier_analysis(path_to_file, first_point, last_point)

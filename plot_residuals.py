@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-"""
+d = """
 =============================================
 
 Analysis of small-angle X-ray scattering data.
@@ -187,12 +187,12 @@ if __name__ == "__main__":
 
 	# Argument parser
 
-	argparser = argparse.ArgumentParser()
-	argparser.add_argument("-f", type=str, help="Path to topology file", required=True)
+	argparser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=d)
+	argparser.add_argument("-f", type=str, help="Path to the fit file (.fit)", required=True)
 	argparser.add_argument("-exp_name", type=str, help="Experimental data name", required=True)
 	argparser.add_argument("-fit_name", type=str, help="Fit data name", required=True)
 	argparser.add_argument("-maxq", type=float, default=0.5, help="Maximum value of q for plotting, default=0.5 (A)", required=False)
-	argparser.add_argument("-output_name", type=str, help="Output name", required=True)
+	argparser.add_argument("-output_name", type=str, help="Output file name", required=True)
 
 	# Parse arguments
 
@@ -217,3 +217,6 @@ if __name__ == "__main__":
 				dataname=exp_name,
 				fitname=fit_name,
 				output_name=output_name)
+
+
+
