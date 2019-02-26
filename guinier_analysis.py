@@ -176,7 +176,7 @@ def guinier_plot(x, y, first_x_removed, first_y_removed,
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
-	ax.text(0.75, 0.65, s="$q$ region = {}-{}".format(np.round(x[0], 4), np.round(x[-1], 4)),
+	ax.text(0.75, 0.65, s="$q$ region = {}-{}".format(np.round(np.sqrt(x[0]), 4), np.round(np.sqrt(x[-1]), 4)),
 			horizontalalignment='center',
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
