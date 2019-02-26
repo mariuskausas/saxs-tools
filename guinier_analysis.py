@@ -189,6 +189,8 @@ def guinier_plot(x, y, first_x_removed, first_y_removed,
 			verticalalignment='center',
 			transform=ax.transAxes, fontsize=20)
 
+	ax.set_title(output_name, fontsize=20)
+
 	plt.savefig(output_name + ".png", dpi=300)
 	plt.close()
 
