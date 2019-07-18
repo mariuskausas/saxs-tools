@@ -13,7 +13,7 @@ The script performs the following:
 - Clean-up the CRYSOL .fit and .log files after each frame.
 
 Before use:
-- Install numpy and MDAnalysis.
+- Install numpy, MDAnalysis and CRYSOL. Make sure crysol executable is in your path.
 
 To use the script provide:
 - Topology .pdb file of a starting trajectory frame.
