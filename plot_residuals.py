@@ -101,7 +101,8 @@ def normprobplot(normprob, boundary):
 	plt.plot(fit_line, fit_line, color="k", linestyle='--', zorder=2, linewidth=1)
 	plt.xlim(-boundary, boundary)
 	plt.ylim(-boundary, boundary)
-
+	
+	return
 
 def plot_residuals(q, exp, fit, sigma, maxq, dataname, fitname, output_name):
 
@@ -181,6 +182,8 @@ def plot_residuals(q, exp, fit, sigma, maxq, dataname, fitname, output_name):
 	plt.suptitle(output_name)
 	plt.savefig(output_name + ".png", dpi=600)
 	plt.show()
+	
+	return
 
 
 if __name__ == "__main__":
@@ -217,6 +220,3 @@ if __name__ == "__main__":
 				dataname=exp_name,
 				fitname=fit_name,
 				output_name=output_name)
-
-
-
