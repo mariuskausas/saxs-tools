@@ -82,10 +82,10 @@ def populate_mat(shape, value_l):
     slice_j = shape - 1
     
     # Populate upper triangle with values from a list
-    for i in range(n_dats - 1):
+    for i in range(shape - 1):
         mat[i:i + 1, i + 1:] = np.array(value_l[slice_i: slice_j])
         slice_i = slice_j
-        slice_j = slice_i + n_dats - 2 - i
+        slice_j = slice_i + shape - 2 - i
         
     return mat
 
@@ -117,22 +117,22 @@ def cormap(path_to_dats):
     return c_mat, p_adj_mat
 
 
-def plot_p_adj_mat(p_adj_mat):
+def plot_p_adj_mat(p_adj_mat, annot=False):
     """ Plot adjusted P-value matrix."""
 
     shape = p_adj_mat.shape[0]
     plt.figure(figsize=[12, 10])
-    sns.heatmap(p_adj_mat, annot=True, fmt='.5f', vmin=0, vmax=1, xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
+    sns.heatmap(p_adj_mat, annot=anot, fmt='.5f', vmin=0, vmax=1, xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
     plt.savefig("p_adj_mat.png", dpi=300)
     plt.close()
 
 
-def plot_c_mat(c_mat):
+def plot_c_mat(c_mat, annot=False):
     """ Plot adjusted CORMAP value matrix."""
     
     shape = c_mat.shape[0]
     plt.figure(figsize=[12, 10])
-    sns.heatmap(c_mat, annot=True, fmt='.1f', xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
+    sns.heatmap(c_mat, annot=annot, fmt='.1f', xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
     plt.savefig("c_mat.png", dpi=300)
     plt.close()
 
