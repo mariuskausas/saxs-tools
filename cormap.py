@@ -123,7 +123,7 @@ def plot_c_mat(c_mat, output_name, annot=False):
     shape = c_mat.shape[0]
     plt.figure(figsize=[12, 10])
     sns.heatmap(c_mat, annot=annot, fmt='.1f', xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
-    plt.savefig(output_name + "c_mat.png", dpi=300)
+    plt.savefig(output_name + "_c_mat.png", dpi=300)
     plt.close()
     
     
