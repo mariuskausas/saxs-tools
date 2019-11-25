@@ -117,22 +117,22 @@ def cormap(path_to_dats):
     return c_mat, p_adj_mat
 
 
-def plot_p_adj_mat(p_adj_mat, annot=False):
-    """ Plot adjusted P-value matrix."""
-
-    shape = p_adj_mat.shape[0]
-    plt.figure(figsize=[12, 10])
-    sns.heatmap(p_adj_mat, annot=anot, fmt='.5f', vmin=0, vmax=1, xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
-    plt.savefig("p_adj_mat.png", dpi=300)
-    plt.close()
-
-
-def plot_c_mat(c_mat, annot=False):
+def plot_c_mat(c_mat, output_name, annot=False):
     """ Plot adjusted CORMAP value matrix."""
     
     shape = c_mat.shape[0]
     plt.figure(figsize=[12, 10])
     sns.heatmap(c_mat, annot=annot, fmt='.1f', xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
-    plt.savefig("c_mat.png", dpi=300)
+    plt.savefig(output_name + "c_mat.png", dpi=300)
     plt.close()
+    
+    
+def plot_p_adj_mat(p_adj_mat, output_name, annot=False):
+    """ Plot adjusted P-value matrix."""
 
+    shape = p_adj_mat.shape[0]
+    plt.figure(figsize=[12, 10])
+    sns.heatmap(p_adj_mat, annot=annot, fmt='.5f', vmin=0, vmax=1, xticklabels=np.arange(1, shape + 1), yticklabels=np.arange(1, shape + 1))
+    plt.savefig(output_name + "_p_adj_mat.png", dpi=300)
+    plt.close()
+    
