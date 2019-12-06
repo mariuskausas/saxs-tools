@@ -55,7 +55,7 @@ def plot_rg_intensity_trace(i0, rg, frame_range, selected_frames):
                rg[selected_frames[0]] + 10,
                linewidth=5,
                color="tab:red")
-    ax2.vlines(selected_frames[1] - 0.5,
+    ax2.vlines(selected_frames[1] + 0.5,
                rg[selected_frames[1]],
                rg[selected_frames[1]] + 10,
                linewidth=5,
